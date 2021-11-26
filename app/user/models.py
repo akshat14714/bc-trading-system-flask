@@ -38,17 +38,3 @@ class User(db.Model):
 
     def __repr__(self):
         return "User<%d> %s" % (self.id, self.username)
-
-    # @property
-    # def password(self):
-    #     raise AttributeError('password is not readable')
-    #
-    # @password.setter
-    # def password(self, password):
-    #     self.password = generate_password_hash(password)
-    #
-    # def verify_password(self, password):
-    #     return check_password_hash(self.password, password)
-    #
-    # def __repr__(self):
-    #     return 'User: <>'.format(self.username)

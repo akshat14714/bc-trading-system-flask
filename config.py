@@ -8,7 +8,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # Define the database - we are working with
 # SQLite for this example
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:password@localhost/btctradingflask'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://sql_admin:progamut@localhost/btctradingflask'
 DATABASE_CONNECT_OPTIONS = {}
 
 # Application threads. A common general assumption is
@@ -26,34 +26,3 @@ CSRF_SESSION_KEY = "secret"
 
 # Secret key for signing cookies
 SECRET_KEY = "secret"
-
-
-# class Config(object):
-#     """
-#     Common configurations
-#     """
-#
-#     # Put any configurations here that are common across all environments
-#
-#
-# class DevelopmentConfig(Config):
-#     """
-#     Development configurations
-#     """
-#
-#     DEBUG = True
-#     SQLALCHEMY_ECHO = True
-#
-#
-# class ProductionConfig(Config):
-#     """
-#     Production configurations
-#     """
-#
-#     DEBUG = False
-#
-#
-# app_config = {
-#     'development': DevelopmentConfig,
-#     'production': ProductionConfig
-# }

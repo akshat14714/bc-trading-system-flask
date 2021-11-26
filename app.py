@@ -27,8 +27,8 @@ CORS(app)
 
 # initialize all the key value pairs required for the mysql connection
 # app.secret_key = 'password123'
-# app.config['MYSQL_DATABASE_USER'] = 'root'
-# app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
+# app.config['MYSQL_DATABASE_USER'] = 'sql_admin'
+# app.config['MYSQL_DATABASE_PASSWORD'] = 'progamut'
 # app.config['MYSQL_DATABASE_DB'] = 'btctradingflask'
 
 # mysql = MySQL(app)
