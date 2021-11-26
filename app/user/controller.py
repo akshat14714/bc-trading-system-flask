@@ -62,6 +62,9 @@ def register():
         first_name = request.form['firstname']
         last_name = request.form['lastname']
         mobile_phone = request.form['mobilephone']
+        street = request.form['street']
+        city = request.form['city']
+        zipcode = request.form['zipcode']
         user = User.query.filter(User.username == username).first()
         if user:
             msg = 'User already exists !'
@@ -74,7 +77,7 @@ def register():
         elif not username or not password or not email or not first_name or not last_name or not mobile_phone:
             msg = 'Please fill out the form !'
         else:
-            user = User(username, email, first_name, last_name, password, mobile_phone)
+            user = User(username, email, first_name, last_name, password, mobile_phone, street, city, zipcode)
             print(password)
             db.session.add(user)
             db.session.commit()
