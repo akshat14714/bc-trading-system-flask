@@ -14,7 +14,7 @@ class User(db.Model):
     last_name = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     mobile_phone = db.Column(db.String(10), nullable=False, unique=True)
-    type = db.Column(db.Integer, nullable=False, default=3)
+    user_type = db.Column(db.Integer, nullable=False, default=3)
     level = db.Column(db.Integer, nullable=True)
     street = db.Column(db.String(255))
     city = db.Column(db.String(100))
@@ -28,15 +28,16 @@ class User(db.Model):
     TRADER = 2
     CLIENT = 3
 
-    def __init__(self, username, email, first_name, last_name, password, mobile_phone, street, city, state, zipcode,
-                 bitcoin_balance=0, fiat_balance=0, total_transaction=0):
+    def __init__(self, username, email, first_name, last_name, password, mobile_phone, user_type, street='', city='Dallas',
+                 state='Texas', zipcode='75252', bitcoin_balance=0, fiat_balance=0, total_transaction=0):
         self.username = username
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
-        self.password = password
+        self.password = generate_password_hash(password)
         self.mobile_phone = mobile_phone
-        if self.type == self.CLIENT:
+        self.user_type = user_type
+        if self.user_type == self.CLIENT:
             self.level = 1
         self.street = street
         self.city = city

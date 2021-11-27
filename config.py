@@ -36,3 +36,5 @@ commission_rates = {
     1: 10,
     2: 5
 }
+
+TRANSACTION_AMOUNT_FOR_LEVEL_CHANGE = 100000

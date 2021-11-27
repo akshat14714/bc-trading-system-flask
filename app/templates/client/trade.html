@@ -1,0 +1,76 @@
+{% import 'macros.html' as macros %}
+{% extends "base.html" %}
+{% block title %}Trade{% endblock %}
+{% block body %}
+
+{% block content %}
+<div class="container">
+    <div class="content-section">
+        <div class="row">
+            <div class="col-sm-12">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'message' %}
+                <div class="alert alert-warning" role="alert">
+                    {% else %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        {% endif %}
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h1>Welcome {{ session['username'] }} </h1>
+                    <hr>
+                    <h2>Let's Trade!</h2>
+                    <hr>
+                </div>
+            </div>
+        </div>
+<!--    </div>-->
+    <div class="row center">
+        <div class="col-sm-12">
+            Available USD Balance: {{ '${:,.2f}'.format(account.fiat_balance) }}<br/>
+            Available BTC Balance: {{ "\u0E3F{:,.4f}".format(account.bitcoin_balance) }}<br/>
+        </div>
+    </div>
+    <br><br>
+    <div class="row center">
+        <div class="col-sm-12">
+            <form action="{{ url_for('user.trade') }}" method="post">
+                <input id="bitcoin_amount" name="bitcoin_amount" type="text"
+                       placeholder="Enter number of bitcoins to trade" class="textbox" required="True"/><br><br>
+                Type of Trade:
+                <input id="buy" name="buysell" type="radio" value="buy" required>
+                <label for="buy">Buy</label>
+                <input id="sell" name="buysell" type="radio" value="sell">
+                <label for="sell">Sell</label>
+                <br>
+                Commission Payment Mode:
+                <input id="USD" name="commissiontype" type="radio" value="usd" required>
+                <label for="USD">USD</label>
+                <input id="btc" name="commissiontype" type="radio" value="bitcoin">
+                <label for="btc">Bitcoins</label>
+                <br>
+                <button type="submit" class="btn btn-sm btn-primary">Trade!</button>
+            </form>
+            <br><br>
+        </div>
+    </div>
+        <div class="row center">
+            <div class="col-sm-12">
+                Commission = {{ account.commission }}% of TradingAmount<br>
+                Current Exchange Rate per Bitcoin = {{ account.exchange_rate }} USD
+            </div>
+        </div>
+    <br><br><br>
+</div>
+</div>
+{%  endblock %}
+
+{% endblock %}
