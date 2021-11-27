@@ -26,3 +26,10 @@ CSRF_SESSION_KEY = "secret"
 
 # Secret key for signing cookies
 SECRET_KEY = "secret"
+
+user_status = {
+    1: 'silver',
+    2: 'gold'
+}
+
+

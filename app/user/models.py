@@ -21,13 +21,14 @@ class User(db.Model):
     zipcode = db.Column(db.String(10))
     bitcoin_balance = db.Column(db.Float, default=0.0)
     fiat_balance = db.Column(db.Float, default=0.0)
+    total_transaction = db.Column(db.Float, default=0.0)
 
     MANAGER = 1
     TRADER = 2
     CLIENT = 3
 
     def __init__(self, username, email, first_name, last_name, password, mobile_phone, street, city, zipcode,
-                 bitcoin_balance=0, fiat_balance=0):
+                 bitcoin_balance=0, fiat_balance=0, total_transaction=0):
         self.username = username
         self.email = email
         self.first_name = first_name
@@ -41,6 +42,7 @@ class User(db.Model):
         self.zipcode = zipcode
         self.bitcoin_balance = bitcoin_balance
         self.fiat_balance = fiat_balance
+        self.total_transaction = total_transaction
 
     def check_password(self, password):
         return check_password_hash(self.password, password)

@@ -11,9 +11,6 @@ from flask_cors import CORS
 mod_user = Blueprint('user', __name__)
 CORS(mod_user)
 
-global a
-a = ''
-
 
 # @mod_user.route('/', methods=['GET'])
 # def func():
@@ -21,33 +18,24 @@ a = ''
 #         return redirect('/login')
 #     return render_template('index.html')
 
-@mod_user.route('/')
+# @mod_user.route('/')
 @mod_user.route('/login', methods=['GET', 'POST'])
 def login():
     display_message = ''
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
         username = request.form['username']
-        # print(request.form['password'])
-        # print(generate_password_hash('password'))
         password = request.form['password']
-        # cursor = mysql.get_db().cursor()
-        # cursor.execute('SELECT * FROM users WHERE username = %s AND password = %s', (username, password))
-        # account = cursor.fetchone()
         user = User.query.filter(User.username == username).first()
-        # print(user.password)
-        # print(password)
-        print(user.check_password(password))
         if user is None or not user.check_password(password):
             return make_response('Invalid Username or Password', 400, None)
-        print(user)
         # if user:
         session['loggedin'] = True
         session['id'] = user.id
         session['username'] = user.username
+        session['usertype'] = user.type
         msg = 'Logged in successfully !'
-        return render_template('index.html')
-        # else:
-        #     msg = 'Incorrect username / password !'
+        if user.type == User.CLIENT:
+            return render_template('client/client_home.html', user=user)
     return render_template('login.html')
 
 
@@ -93,5 +81,6 @@ def logout():
     if 'username' in session:
         session.pop('username')
         session.pop('id')
+        session.pop('usertype')
         session.pop('loggedin')
     return redirect('/login')
