@@ -13,7 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-from app.home.controllers import home
+from app.home.controller import home
 from app.user.controller import mod_user
 
 app.register_blueprint(home)

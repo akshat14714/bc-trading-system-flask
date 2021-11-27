@@ -12,13 +12,6 @@ mod_user = Blueprint('user', __name__)
 CORS(mod_user)
 
 
-# @mod_user.route('/', methods=['GET'])
-# def func():
-#     if 'username' not in session and 'email' not in session:
-#         return redirect('/login')
-#     return render_template('index.html')
-
-# @mod_user.route('/')
 @mod_user.route('/login', methods=['GET', 'POST'])
 def login():
     display_message = ''
@@ -33,7 +26,7 @@ def login():
         session['id'] = user.id
         session['username'] = user.username
         session['usertype'] = user.type
-        msg = 'Logged in successfully !'
+        # msg = 'Logged in successfully !'
         if user.type == User.CLIENT:
             return render_template('client/client_home.html', user=user)
     return render_template('login.html')
@@ -52,6 +45,7 @@ def register():
         mobile_phone = request.form['mobilephone']
         street = request.form['street']
         city = request.form['city']
+        state = request.form['state']
         zipcode = request.form['zipcode']
         user = User.query.filter(User.username == username).first()
         if user:
@@ -65,12 +59,11 @@ def register():
         elif not username or not password or not email or not first_name or not last_name or not mobile_phone:
             msg = 'Please fill out the form !'
         else:
-            user = User(username, email, first_name, last_name, password, mobile_phone, street, city, zipcode)
-            print(password)
+            user = User(username, email, first_name, last_name, password, mobile_phone, street, city, state, zipcode)
             db.session.add(user)
             db.session.commit()
             msg = 'You have successfully registered !'
-            return redirect('/')
+            return redirect('/login')
     elif request.method == 'POST':
         msg = 'Please fill out the form !'
     return render_template('register.html', msg=msg)
@@ -84,3 +77,28 @@ def logout():
         session.pop('usertype')
         session.pop('loggedin')
     return redirect('/login')
+
+
+@mod_user.route('/client/profile', methods=['GET'])
+def user_profile():
+    user = User.query.filter(User.username == session['username']).first()
+    return render_template('client/client_home.html', user=user)
+
+
+@mod_user.route('/client/deposit_fiat', methods=['GET', 'POST'])
+def deposit_fiat():
+    if 'username' not in session or session['usertype'] != User.CLIENT:
+        abort(403)
+
+    if request.method == 'POST':
+        client_id = session['id']
+        amount = request.form['fiat_deposit_amount']
+
+        user = User.query.filter(User.id == client_id).first()
+        user.fiat_balance += float(amount)
+
+        db.session.commit()
+
+        return render_template('client/client_home.html', title=user.username, user=user)
+
+    return render_template('client/deposit_fiat.html')

@@ -32,4 +32,7 @@ user_status = {
     2: 'gold'
 }
 
-
+commission_rates = {
+    1: 10,
+    2: 5
+}

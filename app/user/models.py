@@ -18,6 +18,7 @@ class User(db.Model):
     level = db.Column(db.Integer, nullable=True)
     street = db.Column(db.String(255))
     city = db.Column(db.String(100))
+    state = db.Column(db.String(50))
     zipcode = db.Column(db.String(10))
     bitcoin_balance = db.Column(db.Float, default=0.0)
     fiat_balance = db.Column(db.Float, default=0.0)
@@ -27,7 +28,7 @@ class User(db.Model):
     TRADER = 2
     CLIENT = 3
 
-    def __init__(self, username, email, first_name, last_name, password, mobile_phone, street, city, zipcode,
+    def __init__(self, username, email, first_name, last_name, password, mobile_phone, street, city, state, zipcode,
                  bitcoin_balance=0, fiat_balance=0, total_transaction=0):
         self.username = username
         self.email = email
@@ -39,6 +40,7 @@ class User(db.Model):
             self.level = 1
         self.street = street
         self.city = city
+        self.state = state
         self.zipcode = zipcode
         self.bitcoin_balance = bitcoin_balance
         self.fiat_balance = fiat_balance

@@ -1,0 +1,30 @@
+{% import 'macros.html' as macros %}
+{% extends "base.html" %}
+{% block title %}Add Fiat Funds{% endblock %}
+{% block body %}
+
+{% block content %}
+<div class="container">
+    <div class="content-section">
+        <div class="row">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h1>Welcome {{ session['username'] }} </h1>
+                    <hr>
+                    <p>Please add your funds!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <form action="{{ url_for('user.deposit_fiat') }}" method="post">
+            <input id="fiat_deposit_amount" name="fiat_deposit_amount" type="text"
+                   placeholder="Enter Amount to be Deposited" class="textbox"/>
+            <button type="submit" class="btn btn-sm btn-primary">Deposit</button>
+        </form>
+    </div>
+    <br><br><br>
+</div>
+{%  endblock %}
+
+{% endblock %}

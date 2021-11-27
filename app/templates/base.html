@@ -94,13 +94,15 @@ window.onclick = function(event)
                     <ul class="list-inline">
                         <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
                         <li class="footer-menu-divider">⋅</li>
-			{% if 'username' in session %}
-      				<li><a href="{{ url_for('user.logout') }}">Logout</a></li>
-    			{% else %}
-      				<li><a href="{{ url_for('user.register') }}">Register</a></li>
-      				<li class="footer-menu-divider">⋅</li>
-      				<li><a href="{{ url_for('user.login') }}">Login</a></li>
-    			{% endif %}
+			            {% if 'username' in session %}
+                        <li><a href="{{ url_for('user.user_profile') }}">Profile</a></li>
+                        <li class="footer-menu-divider">⋅</li>
+      				    <li><a href="{{ url_for('user.logout') }}">Logout</a></li>
+    			        {% else %}
+                        <li><a href="{{ url_for('user.register') }}">Register</a></li>
+                        <li class="footer-menu-divider">⋅</li>
+                        <li><a href="{{ url_for('user.login') }}">Login</a></li>
+    			        {% endif %}
                     </ul>
                     <p class="copyright text-muted small">Copyright © 2018. All Rights Reserved</p>
                 </div>
