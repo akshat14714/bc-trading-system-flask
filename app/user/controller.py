@@ -36,6 +36,8 @@ def login():
         msg = 'Logged in successfully !'
         if user.type == User.CLIENT:
             return render_template('client/client_home.html', user=user)
+        elif user.type == User.MANAGER:
+            return render_template('manager/manager_home.html', user=user)
     return render_template('login.html')
 
 
@@ -84,3 +86,5 @@ def logout():
         session.pop('usertype')
         session.pop('loggedin')
     return redirect('/login')
+
+
