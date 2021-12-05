@@ -22,29 +22,11 @@ def get_trader_profile():
     if 'username' not in session or session['usertype'] != User.TRADER:
         abort(403)
 
-    # transactions_by_month = Trade.query.with_entities(sa.func.year(Trade.timestamp), sa.func.month(Trade.timestamp),
-    #                                           func.count(Trade.timestamp).label('count')).group_by(
-    #     sa.func.year(Trade.timestamp), sa.func.month(Trade.timestamp)).filter_by(trader_id=session['user_id'])
+    trades = Trade.query.filter_by(trader_id=session['user_id']).order_by(Trade.timestamp.desc())
 
-    all_trades = Trade.query.filter_by(trader_id=session['user_id']).order_by(Trade.timestamp)
+    transactions = Transaction.query.filter_by(trader_id=session['user_id']).order_by(Transaction.timestamp.desc())
 
-    all_transactions = Transaction.query.filter_by(trader_id=session['user_id']).order_by(Transaction.timestamp)
-
-    # deposits_by_month = Transaction.query.with_entities(sa.func.year(Transaction.timestamp), sa.func.month(Transaction.timestamp),
-    #                                               func.count(Transaction.timestamp).label('count')).group_by(
-    #     sa.func.year(Transaction.timestamp), sa.func.month(Transaction.timestamp)).filter_by(trader_id=session['user_id'])
-
-    # monthly_order_transactions = []
-    # for order in transactions_by_month:
-    #     month_transaction = [order[0], order[1], order[2]]
-    #     monthly_order_transactions.append(order)
-    #
-    # monthly_deposit_transactions = []
-    # for deposit in deposits_by_month:
-    #     month_transaction = [deposit[0], deposit[1], deposit[2]]
-    #     monthly_deposit_transactions.append(deposit)
-
-    return render_template('trader/profile.html', all_trades=all_trades, all_transactions=all_transactions)
+    return render_template('trader/profile.html', trades=trades, transactions=transactions)
 
 
 @trader.route('/trader/pending_deposits')
@@ -186,7 +168,7 @@ def get_client_info(id):
     client = User.query.filter_by(id=id)
     trades = Trade.query.filter_by(client_id=id).order_by(desc(Trade.timestamp))
     deposits = Transaction.query.filter_by(client_id=id).order_by(desc(Transaction.timestamp))
-    return render_template('trader/client_info.html', title='Client information', client=client, payments=deposits,
+    return render_template('trader/client_info.html', title='Client information', client=client, deposits=deposits,
                            trades=trades)
 
 

@@ -24,79 +24,73 @@
                     {% endwith %}
                 </div>
             </div>
-            <div class="row">
-                </br>
-                <span style="text-align: center">Client Status update happens every month end at 11:55PM</span>
-                </br>
-            </div>
+<!--            <div class="row">-->
+<!--                </br>-->
+<!--                <span style="text-align: center">Client Status update happens every month end at 11:55PM</span>-->
+<!--                </br>-->
+<!--            </div>-->
             </br>
             <div class="row">
-                <span>Statistics of Transactions</span>
-            </div>
-            <h2 style="text-align: center">Most Recent Transactions</h2>
-            <div class="row">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#Trades">Trades</a></li>
-                    <li><a data-toggle="tab" href="#Deposits">Deposits</a></li>
-                </ul>
+                <h3>All Trades</h3>
+                <div id="Trades" class="row">
+                    <table class="table table-dark">
+                        <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Client Id</th>
+                            <th scope="col">Trader Id</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Trade Type</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">BitCoin Amount</th>
+                            <th scope="col">Exchange Rate</th>
+                        </tr>
+                        </thead>
 
-                <div class="tab-content">
-                    <div id="Trades" class="tab-pane fade in active">
-                        <div class="row">
-                            <table class="table table-dark">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th scope="col">Id</th>
-                                        <th scope="col">Time</th>
-                                        <th scope="col">Trade/Status</th>
-                                        <th scope="col">BTC Amount</th>
-                                        <th scope="col">Exchange Rate</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    {% for trade in trades %}
-                                    <tr>
-                                        <td>{{ trade.id }}</td>
-                                        <td>{{ trade.timestamp }}</td>
-                                        <td>{{ "Buy" if trade.xid_type=="buy" else "Sell" }} <br />{{
-                                            macros.status_pill(trade.status) }} </td>
-                                        <td>{{ '\u0E3F{:,.4f}'.format(trade.bitcoin_amount) }}</td>
-                                        <td>{{ '\u0E3F{:,.4f}'.format(trade.exchange_rate) }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-
-                        </div>
-                    </div>
-
-                    <div id="Deposits" class="tab-pane fade">
-                        <div class="row">
-                            <table class="table table-dark">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th scope="col">Id</th>
-                                        <th scope="col">Time</th>
-                                        <th scope="col">Amount</th>
-                                        <th scope="col">Status</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    {% for transaction in transactions %}
-                                    <tr>
-                                        <td>{{ transaction.xid }}</td>
-                                        <td>{{ transaction.timestamp }}</td>
-                                        <td>{{ '${:,.2f}'.format(transaction.fiat_amount) }}</td>
-                                        <td>{{ macros.status_pill(transaction.status) }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                        <tbody>
+                        {% for trade in trades %}
+                        <tr>
+                            <td>{{ trade.client_id }}</td>
+                            <td>{{ trade.trader_id }}</td>
+                            <td>{{ trade.timestamp }}</td>
+                            <td>{{ "Buy" if trade.xid_type=="buy" else "Sell" }}</td>
+                            <td>{{ macros.status_pill(trade.status) }}</td>
+                            <td>{{ '\u0E3F{:,.4f}'.format(trade.bitcoin_amount) }}</td>
+                            <td>{{ '${:,.4f}'.format(trade.exchange_rate) }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
+
+                <h3>All Deposits</h3>
+
+                <div id="Deposits" class="row">
+                    <table class="table table-dark">
+                        <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Client Id</th>
+                            <th scope="col">Trader Id</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for transaction in transactions %}
+                        <tr>
+                            <td>{{ transaction.client_id }}</td>
+                            <td>{{ transaction.trader_id }}</td>
+                            <td>{{ transaction.timestamp }}</td>
+                            <td>{{ '${:,.2f}'.format(transaction.fiat_amount) }}</td>
+                            <td>{{ macros.status_pill(transaction.status) }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <!--                        </div>-->
+                </div>
+                <!--                </div>-->
             </div>
 
         </div>

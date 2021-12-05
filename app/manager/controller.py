@@ -23,9 +23,6 @@ def get_manager_profile():
     trades = Trade.query.all()
     transactions = Transaction.query.all()
 
-    for trade in trades:
-        print(trade)
-
     return render_template('manager/manager_home.html', user=user, trades=trades, transactions=transactions)
 
 

@@ -9,7 +9,6 @@ from .model import User
 from ..changelog.model import ChangeLog
 from ..transaction.model import Transaction
 from ..trade.model import Trade
-from werkzeug.security import generate_password_hash, check_password_hash
 import re
 
 from flask_cors import CORS
@@ -27,28 +26,16 @@ def login():
         user = User.query.filter(User.username == username).first()
         if user is None or not user.check_password(password):
             return make_response('Invalid Username or Password', 400, None)
-        # if user:
         session['loggedin'] = True
         session['user_id'] = user.id
         session['username'] = user.username
-# <<<<<<< HEAD
         session['usertype'] = user.user_type
-        # msg = 'Logged in successfully !'
         if user.user_type == User.CLIENT:
             return redirect('/client/profile')
         elif user.user_type == User.TRADER:
             return redirect('/trader/profile')
         elif user.user_type == User.MANAGER:
             return redirect('/manager/profile')
-            # return render_template('manager/manager_home.html', user=user)
-# =======
-#         session['usertype'] = user.type
-#         msg = 'Logged in successfully !'
-#         if user.type == User.CLIENT:
-#             return render_template('client/client_home.html', user=user)
-#         elif user.type == User.MANAGER:
-#             return render_template('manager/manager_home.html', user=user)
-# >>>>>>> origin/ashish
     return render_template('login.html')
 
 
@@ -113,15 +100,14 @@ def get_user_profile():
     return redirect('/login')
 
 
-# <<<<<<< HEAD
 @mod_user.route('/client/profile', methods=['GET'])
 def client_profile():
     if 'username' not in session or session['usertype'] != User.CLIENT:
         abort(403)
 
     user_ = User.query.filter(User.username == session['username']).first()
-    deposits_ = Transaction.query.filter_by(client_id=user_.id, xid_type='add_fund')
-    trades_ = Trade.query.filter_by(client_id=user_.id)
+    deposits_ = Transaction.query.filter_by(client_id=user_.id, xid_type='add_fund').order_by(Transaction.timestamp.desc())
+    trades_ = Trade.query.filter_by(client_id=user_.id).order_by(Trade.timestamp.desc())
     return render_template('client/profile.html', user=user_, deposits=deposits_, trades=trades_)
 
 
@@ -213,11 +199,6 @@ def trade():
             # flash("You don't have enough funds in your account!")
             return render_template('client/trade.html', title='Client Trading', account=account_)
 
-        # user.total_transaction += total_usd_amount
-
-        # if user.level == 1 and user.total_transaction >= config.TRANSACTION_AMOUNT_FOR_LEVEL_CHANGE:
-        #     user.level = 2
-
         trade_ = Trade(xid_type=type_of_trade,
                        status='pending',
                        client_id=user.id,
@@ -244,5 +225,3 @@ def trade():
         return redirect('/client/profile')
 
     return render_template('client/trade.html', title='Client Trading', account=account_)
-# =======
-# >>>>>>> origin/ashish
