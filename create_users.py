@@ -13,6 +13,7 @@ def create_trader():
     db.session.add(trader)
     db.session.commit()
 
+
 def create_manager():
     trader = User(username='admin',
                   email='admin@example.com',

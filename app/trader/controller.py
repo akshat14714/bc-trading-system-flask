@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy.sql.expression import and_
 from sqlalchemy import func, desc
 import sqlalchemy as sa
+import re
 
 import config
 from app import db, utils
@@ -74,7 +75,7 @@ def update_pending_deposit(action, xid):
         # if msg != '':
         #     flash(msg)
     # else:
-        # flash("The selected deposit is not in pending status!")
+    # flash("The selected deposit is not in pending status!")
     return redirect(url_for('trader.list_pending_deposits'))
 
 
@@ -98,6 +99,7 @@ def update_trade(action, xid):
         msg = ''
         bitcoin_price = trade.bitcoin_amount * trade.exchange_rate
         trade.trader_id = session['user_id']
+        trade_trader = User.query.filter_by(id=session['user_id'])
         bitcoin_amount = trade.bitcoin_amount
 
         if action == 'approve':
@@ -115,6 +117,11 @@ def update_trade(action, xid):
                     bitcoin_amount += trade.commission
                 client.bitcoin_balance -= bitcoin_amount
                 client.fiat_balance += bitcoin_price
+
+            if trade.commission_type == 'usd':
+                trade_trader.fiat_balance += trade.commission
+            else:
+                trade_trader.bitcoin_balance += trade.commission
 
             client.total_transaction += trade.fiat_amount
 
@@ -140,7 +147,7 @@ def update_trade(action, xid):
         # if msg != '':
         #     flash(msg)
     # else:
-        # flash("The selected order is not in pending status!")
+    # flash("The selected order is not in pending status!")
     return redirect(url_for('trader.list_pending_trades'))
 
 
@@ -165,7 +172,7 @@ def get_client_data(is_search=0):
 
 @trader.route('/trader/client_info/<int:id>', methods=['GET', 'POST'])
 def get_client_info(id):
-    client = User.query.filter_by(id=id)
+    client = User.query.filter_by(id=id).first()
     trades = Trade.query.filter_by(client_id=id).order_by(desc(Trade.timestamp))
     deposits = Transaction.query.filter_by(client_id=id).order_by(desc(Transaction.timestamp))
     return render_template('trader/client_info.html', title='Client information', client=client, deposits=deposits,
@@ -257,4 +264,3 @@ def trade_for_client(id):
         return redirect('/trader/client_search/0')
 
     return render_template('trader/client_trade.html', title='Trade for Client', account=account_)
-

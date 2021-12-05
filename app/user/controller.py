@@ -44,7 +44,6 @@ def register():
     msg = ''
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form:
         username = request.form['username']
-        print(request.form['password'])
         password = request.form['password']
         email = request.form['email']
         first_name = request.form['firstname']
@@ -66,14 +65,29 @@ def register():
         elif not username or not password or not email or not first_name or not last_name or not mobile_phone:
             msg = 'Please fill out the form !'
         else:
-            user = User(username, email, first_name, last_name, password, mobile_phone, User.CLIENT, street, city,
-                        state, zipcode)
+            user = None
+            if session['usertype'] == User.MANAGER:
+                user_type = int(request.form['usertype'])
+                print("usertype::: ", user_type)
+                user = User(username, email, first_name, last_name, password, mobile_phone, user_type, street, city,
+                            state, zipcode)
+                print(user.level)
+            else:
+                user = User(username, email, first_name, last_name, password, mobile_phone, User.CLIENT, street, city,
+                            state, zipcode)
             db.session.add(user)
             db.session.commit()
             msg = 'You have successfully registered !'
+
+            if session['usertype'] == User.MANAGER:
+                return redirect('/manager/profile')
             return redirect('/login')
     elif request.method == 'POST':
         msg = 'Please fill out the form !'
+
+    if session['usertype'] == User.MANAGER:
+        return render_template('trader_client')
+
     return render_template('register.html', msg=msg)
 
 
@@ -91,7 +105,7 @@ def logout():
 def get_user_profile():
     if 'username' in session:
         if session['usertype'] == User.CLIENT:
-            return  redirect('/client/profile')
+            return redirect('/client/profile')
         elif session['usertype'] == User.TRADER:
             return redirect('/trader/profile')
         elif session['usertype'] == User.MANAGER:
@@ -106,7 +120,8 @@ def client_profile():
         abort(403)
 
     user_ = User.query.filter(User.username == session['username']).first()
-    deposits_ = Transaction.query.filter_by(client_id=user_.id, xid_type='add_fund').order_by(Transaction.timestamp.desc())
+    deposits_ = Transaction.query.filter_by(client_id=user_.id, xid_type='add_fund').order_by(
+        Transaction.timestamp.desc())
     trades_ = Trade.query.filter_by(client_id=user_.id).order_by(Trade.timestamp.desc())
     return render_template('client/profile.html', user=user_, deposits=deposits_, trades=trades_)
 

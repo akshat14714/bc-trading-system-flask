@@ -3,7 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 # from flask_login import LoginManager
 # from flask_migrate import Migrate
 
-# from config import app_config, SQLALCHEMY_DATABASE_URI, SECRET_KEY
+from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime, timedelta
+from dateutil.relativedelta import *
 
 app = Flask(__name__)
 
@@ -25,19 +27,32 @@ app.register_blueprint(mod_manager)
 
 db.create_all()
 
-# def create_app():
-#     app = Flask(__name__, instance_relative_config=True)
-#     app.config.from_object('config')
-#     db.app = app
-#     db.init_app(app)
-#
-#     from app.user.controller import mod_user
-#     app.register_blueprint(mod_user)
-#
-#     # @app.route('/')
-#     # def index():
-#     #     return 'Under Construction'
-#
-#     db.create_all()
-#
-#     return app
+
+def update_client_status():
+    import logging
+
+    log = logging.getLogger('apscheduler.executors.default')
+    log.setLevel(logging.INFO)  # DEBUG
+
+    fmt = logging.Formatter('%(levelname)s:%(name)s:%(message)s')
+    h = logging.StreamHandler()
+    h.setFormatter(fmt)
+    log.addHandler(h)
+
+    from user.model import User
+    with db.app.app_context():
+        clients = User.query.filter_by(user_type=User.CLIENT)
+
+        for client in clients:
+            if client.transactions > 100000:
+                client.level = 1
+            else:
+                client.level = 0
+
+        db.session.commit()
+
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=update_client_status, trigger='cron', month='1-12', day='last', hour='23', minute='55')
+scheduler.start()
+

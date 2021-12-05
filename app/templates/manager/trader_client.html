@@ -13,7 +13,7 @@
                 <h1 class="word">Register</h1>
             </div></br></br></br>
             <h2 class="word">
-                <form action="{{ url_for('trader.register') }}" method="post">
+                <form action="{{ url_for('user.register') }}" method="post">
                     <div class="msg">{{ msg }}</div>
                     <input id="username" name="username" type="text" placeholder="Enter Your Username"
                         class="textbox" /></br></br>
@@ -28,8 +28,14 @@
                     <input id="street" name="street" type="text" placeholder="Enter Your Street Address"
                         class="textbox" /></br></br>
                     <input id="city" name="city" type="text" placeholder="Enter Your City" class="textbox" /></br></br>
+                    <input id="state" name="state" type="text" placeholder="Enter Your State" class="textbox" /></br></br>
                     <input id="zipcode" name="zipcode" type="text" placeholder="Enter Your ZipCode"
                         class="textbox" /></br></br>
+                    User Type to Add:
+                    <input id="trader" name="usertype" type="radio" value="2" required>
+                    <label for="trader">Trader</label>
+                    <input id="client" name="usertype" type="radio" value="3">
+                    <label for="client">Client</label><br><br>
                     <input id="password" name="password" type="password" placeholder="Enter Your Password"
                         class="textbox" /></br></br>
                     <input type="submit" class="btn" value="Sign Up"></br>

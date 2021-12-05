@@ -11,7 +11,7 @@
             <div class="row">
                 <table class="table">
                     <tbody>
-                    {% for client in client %}
+
                     <tr>
                         <td> Client Username</td>
                         <td> {{ client.username }}</td>
@@ -44,7 +44,7 @@
                         <td> Tier</td>
                         <td> {{ "Gold" if client.level==2 else "Silver"}}</td>
                     </tr>
-                    {% endfor %}
+
                     </tbody>
                 </table>
             </div>
