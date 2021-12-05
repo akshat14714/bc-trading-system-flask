@@ -69,7 +69,7 @@
     </style>
 </head>
 
-<body background="../static/img/intro-bg.jpg">
+<body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url_for('home.homepage') }}">BITrade</a>
@@ -87,6 +87,10 @@
                     <a class="nav-link" href="{{ url_for('trader.get_client_data', is_search=0) }}">Search Clients</a>
                     <a class="nav-link" href="{{ url_for('trader.list_pending_deposits') }}">Pending Deposits</a>
                     <a class="nav-link" href="{{ url_for('trader.list_pending_trades') }}">Pending Trades</a>
+                    {% endif %}}
+                    {% if session['usertype']==1 %}
+                    <a class="nav-link" href="{{ url_for('manager.list_clients') }}">Clients</a>
+                    <a class="nav-link" href="{{ url_for('manager.list_traders') }}">Traders</a>
                     {% endif %}}
                     <a class="nav-link" href="{{ url_for('user.logout') }}">Logout</a>
                     {% else %}

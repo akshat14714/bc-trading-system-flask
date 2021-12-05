@@ -38,8 +38,9 @@ def login():
             return redirect('/client/profile')
         elif user.user_type == User.TRADER:
             return redirect('/trader/profile')
-        elif user.type == User.MANAGER:
-            return render_template('manager/manager_home.html', user=user)
+        elif user.user_type == User.MANAGER:
+            return redirect('/manager/profile')
+            # return render_template('manager/manager_home.html', user=user)
 # =======
 #         session['usertype'] = user.type
 #         msg = 'Logged in successfully !'
@@ -106,6 +107,8 @@ def get_user_profile():
             return  redirect('/client/profile')
         elif session['usertype'] == User.TRADER:
             return redirect('/trader/profile')
+        elif session['usertype'] == User.MANAGER:
+            return redirect('/manager/profile')
 
     return redirect('/login')
 

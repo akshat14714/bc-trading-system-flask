@@ -36,33 +36,33 @@
             <h2 style="text-align: center">Most Recent Transactions</h2>
             <div class="row">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#Orders">Orders</a></li>
+                    <li class="active"><a data-toggle="tab" href="#Trades">Trades</a></li>
                     <li><a data-toggle="tab" href="#Deposits">Deposits</a></li>
                 </ul>
 
                 <div class="tab-content">
-                    <div id="Orders" class="tab-pane fade in active">
+                    <div id="Trades" class="tab-pane fade in active">
                         <div class="row">
-                            <table class="table">
+                            <table class="table table-dark">
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">Id</th>
                                         <th scope="col">Time</th>
-                                        <th scope="col">Order/Status</th>
+                                        <th scope="col">Trade/Status</th>
                                         <th scope="col">BTC Amount</th>
                                         <th scope="col">Exchange Rate</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    {% for order in orders %}
+                                    {% for trade in trades %}
                                     <tr>
-                                        <td>{{ order.xid }}</td>
-                                        <td>{{ order.timestamp }}</td>
-                                        <td>{{ "Buy" if order.isBuy else "Sell" }} <br />{{
-                                            macros.status_pill(order.status) }} </td>
-                                        <td>{{ '\u0E3F{:,.4f}'.format(order.btc_amount) }}</td>
-                                        <td>{{ '\u0E3F{:,.4f}'.format(order.xchange) }}</td>
+                                        <td>{{ trade.id }}</td>
+                                        <td>{{ trade.timestamp }}</td>
+                                        <td>{{ "Buy" if trade.xid_type=="buy" else "Sell" }} <br />{{
+                                            macros.status_pill(trade.status) }} </td>
+                                        <td>{{ '\u0E3F{:,.4f}'.format(trade.bitcoin_amount) }}</td>
+                                        <td>{{ '\u0E3F{:,.4f}'.format(trade.exchange_rate) }}</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -73,7 +73,7 @@
 
                     <div id="Deposits" class="tab-pane fade">
                         <div class="row">
-                            <table class="table">
+                            <table class="table table-dark">
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">Id</th>
@@ -84,20 +84,18 @@
                                 </thead>
 
                                 <tbody>
-                                    {% for payment in payments %}
+                                    {% for transaction in transactions %}
                                     <tr>
-                                        <td>{{ payment.xid }}</td>
-                                        <td>{{ payment.timestamp }}</td>
-                                        <td>{{ '${:,.2f}'.format(payment.fiatAmount) }}</td>
-                                        <td>{{ macros.status_pill(payment.status) }}</td>
+                                        <td>{{ transaction.xid }}</td>
+                                        <td>{{ transaction.timestamp }}</td>
+                                        <td>{{ '${:,.2f}'.format(transaction.fiat_amount) }}</td>
+                                        <td>{{ macros.status_pill(transaction.status) }}</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <a href="{{ url_for('manager.list_clients') }}">Clients</a>
-                    <a href="{{ url_for('manager.list_traders') }}">Traders</a>
                 </div>
             </div>
 
