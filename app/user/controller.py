@@ -33,8 +33,10 @@ def login():
         session['username'] = user.username
         session['usertype'] = user.user_type
         # msg = 'Logged in successfully !'
-        if user.type == User.CLIENT:
-            return render_template('client/profile.html', user=user)
+        if user.user_type == User.CLIENT:
+            return redirect('/client/profile')
+        elif user.user_type == User.TRADER:
+            return redirect('/trader/profile')
     return render_template('login.html')
 
 
@@ -83,18 +85,29 @@ def logout():
         session.pop('user_id')
         session.pop('usertype')
         session.pop('loggedin')
+    return redirect('/')
+
+
+@mod_user.route('/profile')
+def get_user_profile():
+    if 'username' in session:
+        if session['usertype'] == User.CLIENT:
+            return  redirect('/client/profile')
+        elif session['usertype'] == User.TRADER:
+            return redirect('/trader/profile')
+
     return redirect('/login')
 
 
 @mod_user.route('/client/profile', methods=['GET'])
-def user_profile():
+def client_profile():
     if 'username' not in session or session['usertype'] != User.CLIENT:
         abort(403)
 
     user_ = User.query.filter(User.username == session['username']).first()
     deposits_ = Transaction.query.filter_by(client_id=user_.id, xid_type='add_fund')
     trades_ = Trade.query.filter_by(client_id=user_.id)
-    return render_template('client/profile.html', user=user_, deposits=deposits_, transactions=trades_)
+    return render_template('client/profile.html', user=user_, deposits=deposits_, trades=trades_)
 
 
 @mod_user.route('/client/deposit_fiat', methods=['GET', 'POST'])
@@ -148,8 +161,10 @@ def trade():
     }
 
     if request.method == 'POST':
-        print(request.form)
-        # form = request.form
+        password = request.form['password']
+        if not user.check_password(password):
+            abort(403)
+
         valid = True
         btc_amount = float(request.form['bitcoin_amount'])
         type_of_trade = request.form['buysell']
@@ -177,10 +192,10 @@ def trade():
         if btc_total > user.bitcoin_balance:
             valid = False
 
-        print(valid, usd_total, btc_total)
+        # print(valid, usd_total, btc_total)
 
         if not valid:
-            flash("You don't have enough funds in your account!")
+            # flash("You don't have enough funds in your account!")
             return render_template('client/trade.html', title='Client Trading', account=account_)
 
         # user.total_transaction += total_usd_amount
@@ -210,7 +225,7 @@ def trade():
 
         db.session.commit()
 
-        flash("You have successfully completed the transaction!")
+        # flash("You have successfully completed the transaction!")
         return redirect('/client/profile')
 
     return render_template('client/trade.html', title='Client Trading', account=account_)

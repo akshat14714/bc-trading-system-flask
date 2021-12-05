@@ -1,0 +1,61 @@
+<!-- app/templates/trader/pending_trades.html -->
+
+{% extends "base.html" %}
+{% block title %}Pending orders{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="content-section">
+        <div class="outer">
+            <div class="middle">
+                <div class="inner">
+                    <h1 style="text-align:center;">Pending Trades</h1>
+                    {% if pending_trades != None %}
+                    <hr class="intro-divider">
+                    <div class="row" style="height: 360px; overflow: auto">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th width="20%"> Order ID</th>
+                                <th width="20%"> Client ID</th>
+                                <th width="15%"> BTC amount</th>
+                                <th width="10%"> Type</th>
+                                <th width="15%"> Approve</th>
+                                <th width="15%"> Cancel</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for pending_trade in pending_trades %}
+                            <tr>
+                                <td> {{ pending_trade.id }}</td>
+                                <td> {{ pending_trade.client_id }}</td>
+                                <td> {{ pending_trade.bitcoin_amount }}</td>
+                                <td> {{ "Buy" if pending_trade.xid_type=="buy" else "Sell" }}</td>
+                                <td>
+                                    <a href="{{ url_for('trader.update_trade', action='approve', xid=pending_trade.id) }}">
+                                        <i class="fa fa-check"></i><span class="label label-success">Approve</span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('trader.update_trade', action='cancel', xid=pending_trade.id) }}">
+                                        <i class="fa fa-close"></i><span class="label label-danger">Cancel</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="text-align: center">
+                        {% else %}
+                        <div style="text-align: center">
+                            <h3>No pending trades</h3>
+                            <hr class="intro-divider">
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

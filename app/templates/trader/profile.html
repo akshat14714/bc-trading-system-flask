@@ -1,0 +1,14 @@
+<!-- app/templates/trader/profile.html -->
+{% extends "base.html" %}
+{% block title %}Trader Profile{% endblock %}
+
+{% block body %}
+{% block content %}
+<div class="container">
+	<div class="content-section">
+		<h2>Welcome, {{ session['username'] }}!</h2>
+  	</div>
+</div>
+
+{% endblock %}
+{% endblock %}

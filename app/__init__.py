@@ -15,9 +15,11 @@ db = SQLAlchemy(app)
 
 from app.home.controller import home
 from app.user.controller import mod_user
+from app.trader.controller import trader
 
 app.register_blueprint(home)
 app.register_blueprint(mod_user)
+app.register_blueprint(trader)
 
 db.create_all()
 

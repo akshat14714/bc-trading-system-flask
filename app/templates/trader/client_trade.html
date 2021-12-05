@@ -35,14 +35,14 @@
         <!--    </div>-->
         <div class="row center">
             <div class="col-sm-12">
-                Available USD Balance: {{ '${:,.2f}'.format(account.fiat_balance) }}<br/>
-                Available BTC Balance: {{ "\u0E3F{:,.4f}".format(account.bitcoin_balance) }}<br/>
+                Available USD Balance in Client's Account: {{ '${:,.2f}'.format(account.fiat_balance) }}<br/>
+                Available BTC Balance in Client's Account: {{ "\u0E3F{:,.4f}".format(account.bitcoin_balance) }}<br/>
             </div>
         </div>
         <br><br>
         <div class="row center">
             <div class="col-sm-12">
-                <form action="{{ url_for('user.trade') }}" method="post">
+                <form action="{{ url_for('trader.trade_for_client', id=account.client_id) }}" method="post">
                     <input id="bitcoin_amount" name="bitcoin_amount" type="text"
                            placeholder="Enter number of bitcoins to trade" class="textbox" required="True"/><br><br>
                     Type of Trade:
@@ -58,7 +58,7 @@
                     <label for="btc">Bitcoins</label>
                     <br>
                     <input id="password" name="password" type="password" placeholder="Enter Your Password"
-                           class="textbox"/><br>
+                           class="textbox"/><br><br>
                     <button type="submit" class="btn btn-sm btn-primary">Trade!</button>
                 </form>
                 <br><br>

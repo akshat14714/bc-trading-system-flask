@@ -9,22 +9,22 @@
 <div class="container">
     <div class="content-section">
         <div class="row">
-            <div class="col-sm-12">
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                {% for category, message in messages %}
-                {% if category == 'message' %}
-                <div class="alert alert-warning" role="alert">
-                    {% else %}
-                    <div class="alert alert-{{ category }}" role="alert">
-                        {% endif %}
-                        {{ message }}
-                    </div>
-                    {% endfor %}
-                    {% endif %}
-                    {% endwith %}
-                </div>
-            </div>
+<!--            <div class="col-sm-12">-->
+<!--                {% with messages = get_flashed_messages(with_categories=true) %}-->
+<!--                {% if messages %}-->
+<!--                {% for category, message in messages %}-->
+<!--                {% if category == 'message' %}-->
+<!--                <div class="alert alert-warning" role="alert">-->
+<!--                    {% else %}-->
+<!--                    <div class="alert alert-{{ category }}" role="alert">-->
+<!--                        {% endif %}-->
+<!--                        {{ message }}-->
+<!--                    </div>-->
+<!--                    {% endfor %}-->
+<!--                    {% endif %}-->
+<!--                    {% endwith %}-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="row">
                 <div class="col-sm-12">
                     <h1>Welcome {{ session['username'] }} </h1>
@@ -101,16 +101,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for transaction in transactions %}
+                    {% for trade in trades %}
                     <tr>
-                        <td>{{ transaction.timestamp }}</td>
-                        <td>{{ "Buy" if transaction.xid_type=="buy" else "Sell" }} </td>
-                        <td>{{ macros.status_pill(transaction.status) }}</td>
-                        <td>{{ '\u0E3F{:,.4f}'.format(transaction.bitcoin_amount) }}</td>
-                        <td>{{ '\u0E3F{:,.4f}'.format(transaction.commission) if transaction.commission_type == 'btc' else
-                            '${:,.2f}'.format(transaction.commission) }}
+                        <td>{{ trade.timestamp }}</td>
+                        <td>{{ "Buy" if trade.xid_type=="buy" else "Sell" }} </td>
+                        <td>{{ macros.status_pill(trade.status) }}</td>
+                        <td>{{ '\u0E3F{:,.4f}'.format(trade.bitcoin_amount) }}</td>
+                        <td>{{ '\u0E3F{:,.4f}'.format(trade.commission) if trade.commission_type == 'btc' else
+                            '${:,.2f}'.format(trade.commission) }}
                         </td>
-                        <td>{{ '${:,.2f}'.format(transaction.exchange_rate) }}</td>
+                        <td>{{ '${:,.2f}'.format(trade.exchange_rate) }}</td>
                     </tr>
                     {% endfor %}
                     </tbody>

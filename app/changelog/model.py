@@ -7,7 +7,7 @@ class ChangeLog(db.Model):
     __tablename__ = 'changelogs'
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime, nullable=False)
-    xid = db.Column(db.Integer, ForeignKey('transactions.id'), nullable=False)
+    xid = db.Column(db.Integer, nullable=False)
     status = db.Column(db.String(50), nullable=False)
     xid_type = db.Column(db.String(20), nullable=False)
     client_id = db.Column(db.Integer, ForeignKey('users.id'))
