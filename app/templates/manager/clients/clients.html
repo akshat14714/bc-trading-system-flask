@@ -1,0 +1,47 @@
+<!-- app/templates/manager/clients/clients.html -->
+{% extends "base.html" %}
+{% block title %}Traders{% endblock %}
+{% block body %}
+<div class="container">
+  <h1 style="text-align:center;">Clients</h1>
+  {% if clients %}
+  <table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col"> First Name </th>
+        <th  scope="col"> Last Name </th>
+        <th scope="col"> Bitcoins </th>
+        <th  scope="col"> Fiat </th>
+        <th  scope="col"> Status </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for client in clients %}
+      <tr>
+        <td> {{ client.first_name }} </td>
+        <td> {{ client.last_name }} </td>
+        <td> {{ client.bitcoin_balance }} </td>
+        <td> {{ client.fiat_balance }} </td>
+        <td>
+          {% if client.level == 1 %}
+            SILVER
+          {% else %}
+            GOLD
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div style="text-align: center">
+  {% else %}
+  <div style="text-align: center">
+    <h3> No Clients have been added. </h3>
+    {% endif %}
+    <a href="{{ url_for('manager.add_client') }}" class="btn btn-default btn-lg">
+      Add Client
+    </a>
+  </div>
+</div>
+{% endblock %}

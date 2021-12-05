@@ -1,0 +1,41 @@
+<!-- app/templates/manager/traders/traders.html -->
+
+{% extends "base.html" %}
+{% block title %}Traders{% endblock %}
+{% block body %}
+<div class="container">
+  <h1 style="text-align:center;">Traders</h1>
+  {% if traders %}
+  <table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col"> First Name </th>
+        <th  scope="col"> Last Name </th>
+        <th scope="col"> Bitcoins </th>
+        <th  scope="col"> Fiat </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for trader in traders %}
+      <tr>
+        <td> {{ trader.first_name }} </td>
+        <td> {{ trader.last_name }} </td>
+        <td> {{ trader.btc_balance }} </td>
+        <td> {{ trader.fiat_balance }} </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div style="text-align: center">
+  {% else %}
+  <div style="text-align: center">
+    <h3> No traders have been added. </h3>
+    <hr class="intro-divider">
+    {% endif %}
+    <a href="{{ url_for('manager.add_trader') }}" class="btn btn-default btn-lg">
+      Add Trader
+    </a>
+  </div>
+</div>
+{% endblock %}

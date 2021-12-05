@@ -15,7 +15,7 @@
             <option value="mobile_phone">Mobile Phone</option>
             <option value="city">City</option>
             <option value="state">State</option>
-            <option value="zip_code">Zipcode</option>
+            <option value="zipcode">Zipcode</option>
         </select>
         <label for="Condition">Search key</label>
         <input type="text" name="Condition" id="Condition">
@@ -24,21 +24,20 @@
     {% if is_search %}
     <hr class="intro-divider">
     <ul class="nav nav-tabs">
-
         <li class="active"><a data-toggle="tab" href="#Results">Results</a></li>
     </ul>
     <div class="tab-content">
         <div id="Results" class="tab-pane fade in active">
             {% if clients != None and clients.count() > 0 %}
             <div class="container" style="height: 360px; overflow: auto">
-                <table class="table">
+                <table class="table table-dark">
                     <thead>
                     <tr>
-                        <th width="10%"> Client Username</th>
-                        <th width="10%"> First Name</th>
-                        <th width="10%"> Last Name</th>
-                        <th width="10%"> History</th>
-                        <th width="10%"> Trade</th>
+                        <th scope="col"> Client Username</th>
+                        <th scope="col"> First Name</th>
+                        <th scope="col"> Last Name</th>
+                        <th scope="col"> History</th>
+                        <th scope="col"> Trade</th>
                     </tr>
                     </thead>
                     <tbody>

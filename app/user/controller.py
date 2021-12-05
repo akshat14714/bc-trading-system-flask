@@ -31,12 +31,23 @@ def login():
         session['loggedin'] = True
         session['user_id'] = user.id
         session['username'] = user.username
+# <<<<<<< HEAD
         session['usertype'] = user.user_type
         # msg = 'Logged in successfully !'
         if user.user_type == User.CLIENT:
             return redirect('/client/profile')
         elif user.user_type == User.TRADER:
             return redirect('/trader/profile')
+        elif user.type == User.MANAGER:
+            return render_template('manager/manager_home.html', user=user)
+# =======
+#         session['usertype'] = user.type
+#         msg = 'Logged in successfully !'
+#         if user.type == User.CLIENT:
+#             return render_template('client/client_home.html', user=user)
+#         elif user.type == User.MANAGER:
+#             return render_template('manager/manager_home.html', user=user)
+# >>>>>>> origin/ashish
     return render_template('login.html')
 
 
@@ -99,6 +110,7 @@ def get_user_profile():
     return redirect('/login')
 
 
+# <<<<<<< HEAD
 @mod_user.route('/client/profile', methods=['GET'])
 def client_profile():
     if 'username' not in session or session['usertype'] != User.CLIENT:
@@ -229,3 +241,5 @@ def trade():
         return redirect('/client/profile')
 
     return render_template('client/trade.html', title='Client Trading', account=account_)
+# =======
+# >>>>>>> origin/ashish

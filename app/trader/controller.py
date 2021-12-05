@@ -169,6 +169,9 @@ def get_client_data(is_search=0):
         if form_data['Condition']:
             clients = User.query.filter(
                 and_(getattr(User, form_data['Field']).like('%' + form_data['Condition'] + '%'), User.user_type == 3))
+            # print(clients)
+            # for client in clients:
+            #     print(client)
         else:
             # flash("Enter some value in search key!")
             return render_template('trader/client_search.html', title='Find clients', is_search=0)
