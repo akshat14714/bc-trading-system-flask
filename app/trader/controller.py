@@ -71,11 +71,6 @@ def update_pending_deposit(action, xid):
         db.session.add(changelog)
 
         db.session.commit()
-
-        # if msg != '':
-        #     flash(msg)
-    # else:
-    # flash("The selected deposit is not in pending status!")
     return redirect(url_for('trader.list_pending_deposits'))
 
 
@@ -99,7 +94,7 @@ def update_trade(action, xid):
         msg = ''
         bitcoin_price = trade.bitcoin_amount * trade.exchange_rate
         trade.trader_id = session['user_id']
-        trade_trader = User.query.filter_by(id=session['user_id'])
+        trade_trader = User.query.filter_by(id=session['user_id']).first()
         bitcoin_amount = trade.bitcoin_amount
 
         if action == 'approve':
@@ -143,11 +138,6 @@ def update_trade(action, xid):
         db.session.add(changelog)
 
         db.session.commit()
-
-        # if msg != '':
-        #     flash(msg)
-    # else:
-    # flash("The selected order is not in pending status!")
     return redirect(url_for('trader.list_pending_trades'))
 
 
@@ -158,11 +148,8 @@ def get_client_data(is_search=0):
         if form_data['Condition']:
             clients = User.query.filter(
                 and_(getattr(User, form_data['Field']).like('%' + form_data['Condition'] + '%'), User.user_type == 3))
-            # print(clients)
-            # for client in clients:
-            #     print(client)
         else:
-            # flash("Enter some value in search key!")
+
             return render_template('trader/client_search.html', title='Find clients', is_search=0)
 
         return render_template('trader/client_search.html', title='Find clients', clients=clients, is_search=1)
@@ -230,10 +217,8 @@ def trade_for_client(id):
         if btc_total > client.bitcoin_balance:
             valid = False
 
-        # print(valid, usd_total, btc_total)
 
         if not valid:
-            # flash("You don't have enough funds in your account!")
             return render_template('trader/client_trade.html', title='Trade for Client', account=account_)
 
         trade_ = Trade(xid_type=type_of_trade,
@@ -259,8 +244,6 @@ def trade_for_client(id):
         db.session.add(changelog)
 
         db.session.commit()
-
-        # flash("You have successfully completed the transaction!")
         return redirect('/trader/client_search/0')
 
     return render_template('trader/client_trade.html', title='Trade for Client', account=account_)

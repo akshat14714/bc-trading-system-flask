@@ -46,11 +46,6 @@ def get_manager_dashboard():
     transactions = []
     for deposit in deposit_results:
         transactions.append(deposit)
-
-    # avgDict = calculateAverage(start_date, end_date, order_results.count() + deposit_results.count())
-    # dailyVolume = convertToDailyHistogramData(end_date, start_date, order_results, deposit_results)
-    # weeklyVolume = convertToWeeklyHistogramData(start_date, dailyVolume)
-    # monthlyVolume = convertToMonthlyHistogramData(start_date, weeklyVolume)
     return render_template('manager/statistics_dashboard.html', trades=trades, transactions=transactions)
 
 

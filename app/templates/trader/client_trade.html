@@ -7,22 +7,6 @@
 <div class="container">
     <div class="content-section">
         <div class="row">
-<!--            <div class="col-sm-12">-->
-<!--                {% with messages = get_flashed_messages(with_categories=true) %}-->
-<!--                {% if messages %}-->
-<!--                {% for category, message in messages %}-->
-<!--                {% if category == 'message' %}-->
-<!--                <div class="alert alert-warning" role="alert">-->
-<!--                    {% else %}-->
-<!--                    <div class="alert alert-{{ category }}" role="alert">-->
-<!--                        {% endif %}-->
-<!--                        {{ message }}-->
-<!--                    </div>-->
-<!--                    {% endfor %}-->
-<!--                    {% endif %}-->
-<!--                    {% endwith %}-->
-<!--                </div>-->
-<!--            </div>-->
             <div class="row">
                 <div class="col-sm-12">
                     <h1>Welcome {{ session['username'] }} </h1>
@@ -32,7 +16,6 @@
                 </div>
             </div>
         </div>
-        <!--    </div>-->
         <div class="row center">
             <div class="col-sm-12">
                 Available USD Balance in Client's Account: {{ '${:,.2f}'.format(account.fiat_balance) }}<br/>

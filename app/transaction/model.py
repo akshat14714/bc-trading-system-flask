@@ -13,7 +13,6 @@ class Transaction(db.Model):
     trader_id = db.Column(db.Integer, ForeignKey('users.id'))
     timestamp = db.Column(db.DateTime, nullable=False)
     fiat_amount = db.Column(db.Float, default=0)
-    # commission = db.Column(db.Float, default=0)
 
     def __init__(self, xid_type, status, client_id, trader_id=6, timestamp=datetime.now(), fiat_amount=0.0):
         self.xid_type = xid_type
@@ -22,7 +21,6 @@ class Transaction(db.Model):
         self.trader_id = trader_id
         self.timestamp = timestamp
         self.fiat_amount = fiat_amount
-        # self.commission = commission
 
     def serialize(self):
         return {'status': self.status,

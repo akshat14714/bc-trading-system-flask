@@ -19,7 +19,6 @@ CORS(mod_user)
 
 @mod_user.route('/login', methods=['GET', 'POST'])
 def login():
-    display_message = ''
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
         username = request.form['username']
         password = request.form['password']
@@ -208,10 +207,7 @@ def trade():
         if btc_total > user.bitcoin_balance:
             valid = False
 
-        # print(valid, usd_total, btc_total)
-
         if not valid:
-            # flash("You don't have enough funds in your account!")
             return render_template('client/trade.html', title='Client Trading', account=account_)
 
         trade_ = Trade(xid_type=type_of_trade,
@@ -236,7 +232,6 @@ def trade():
 
         db.session.commit()
 
-        # flash("You have successfully completed the transaction!")
         return redirect('/client/profile')
 
     return render_template('client/trade.html', title='Client Trading', account=account_)
