@@ -1,0 +1,86 @@
+drop database if exists btctradingflask;
+create user 'sql_admin'@'localhost' identified by 'progamut';
+create database btctradingflask;
+GRANT ALL PRIVILEGES ON bitcoinmanagement_test . * TO 'sql_admin'@'localhost';
+use btctradingflask;
+
+CREATE TABLE users (
+  id int NOT NULL AUTO_INCREMENT,
+  username varchar(30) NOT NULL DEFAULT '',
+  email varchar(50) NOT NULL DEFAULT '',
+  first_name varchar(30) NOT NULL DEFAULT '',
+  last_name varchar(50) NOT NULL DEFAULT '',
+  password varchar(100) NOT NULL DEFAULT '',
+  mobile_phone varchar(20) NOT NULL DEFAULT '',
+  user_type int NOT NULL,
+  level int DEFAULT NULL,
+  street varchar(255) DEFAULT NULL,
+  city varchar(100) DEFAULT NULL,
+  state varchar(50) DEFAULT NULL,
+  zipcode varchar(10) DEFAULT NULL,
+  bitcoin_balance float NOT NULL DEFAULT '0',
+  fiat_balance float NOT NULL DEFAULT '0',
+  total_transaction float DEFAULT '0',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE transactions (
+  id int NOT NULL AUTO_INCREMENT,
+  xid_type varchar(20) NOT NULL DEFAULT '',
+  status varchar(30) NOT NULL DEFAULT '',
+  client_id int NOT NULL,
+  trader_id int NOT NULL,
+  timestamp datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  fiat_amount float NOT NULL DEFAULT '0',
+  PRIMARY KEY (id),
+  KEY payment_client (client_id),
+  KEY payment_trader (trader_id),
+  CONSTRAINT payment_client FOREIGN KEY (client_id) REFERENCES users (id),
+  CONSTRAINT payment_trader FOREIGN KEY (trader_id) REFERENCES users (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE trades (
+  id int NOT NULL AUTO_INCREMENT,
+  xid_type varchar(20) NOT NULL DEFAULT '',
+  status varchar(30) NOT NULL DEFAULT '',
+  client_id int NOT NULL,
+  trader_id int NOT NULL,
+  timestamp datetime NOT NULL,
+  fiat_amount float NOT NULL,
+  bitcoin_amount float NOT NULL,
+  exchange_rate float NOT NULL,
+  commission float NOT NULL,
+  commission_type varchar(10) NOT NULL DEFAULT '',
+  PRIMARY KEY (id),
+  KEY client_trade (client_id),
+  KEY trader_trade (trader_id),
+  CONSTRAINT client_trade FOREIGN KEY (client_id) REFERENCES users (id),
+  CONSTRAINT trader_trade FOREIGN KEY (trader_id) REFERENCES users (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE changelogs (
+  id int NOT NULL AUTO_INCREMENT,
+  timestamp datetime NOT NULL,
+  xid int NOT NULL,
+  status varchar(255) NOT NULL,
+  xid_type varchar(255) NOT NULL,
+  client_id int NOT NULL,
+  trader_id int NOT NULL,
+  PRIMARY KEY (id),
+  KEY client_id (client_id),
+  KEY trader_id (trader_id),
+  KEY xid (xid),
+  CONSTRAINT changelogs_ibfk_1 FOREIGN KEY (client_id) REFERENCES users (id),
+  CONSTRAINT changelogs_ibfk_2 FOREIGN KEY (trader_id) REFERENCES users (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP Table Commands:
+
+DROP TABLE IF EXISTS changelogs;
+
+DROP TABLE IF EXISTS trades;
+
+DROP TABLE IF EXISTS transactions;
+
+DROP TABLE IF EXISTS users;
