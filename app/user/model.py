@@ -1,5 +1,3 @@
-# from flask_login import UserMixin
-from sqlalchemy import ForeignKey
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import db
@@ -13,7 +11,7 @@ class User(db.Model):
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    mobile_phone = db.Column(db.String(10), nullable=False, unique=True)
+    mobile_phone = db.Column(db.String(10), nullable=False)
     user_type = db.Column(db.Integer, nullable=False, default=3)
     level = db.Column(db.Integer, nullable=True)
     street = db.Column(db.String(255))

@@ -1,0 +1,8 @@
+Flask
+flask-sqlalchemy
+flask-cors
+sqlalchemy
+Werkzeug
+pymysql
+requests==2.22.0
+apscheduler

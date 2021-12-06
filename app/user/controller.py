@@ -1,6 +1,4 @@
 from flask import *
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.sql import func
 from datetime import datetime
 
 import config

@@ -13,7 +13,7 @@ class ChangeLog(db.Model):
     client_id = db.Column(db.Integer, ForeignKey('users.id'))
     trader_id = db.Column(db.Integer, ForeignKey('users.id'))
 
-    def __init__(self, timestamp, xid, status, xid_type, client_id, trader_id=6):
+    def __init__(self, timestamp, xid, status, xid_type, client_id, trader_id=2):
         self.timestamp = timestamp
         self.xid = xid
         self.status = status

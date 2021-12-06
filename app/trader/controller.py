@@ -2,7 +2,6 @@ from flask import *
 from datetime import datetime
 from sqlalchemy.sql.expression import and_
 from sqlalchemy import func, desc
-import sqlalchemy as sa
 import re
 
 import config

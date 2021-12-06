@@ -14,7 +14,7 @@ class Transaction(db.Model):
     timestamp = db.Column(db.DateTime, nullable=False)
     fiat_amount = db.Column(db.Float, default=0)
 
-    def __init__(self, xid_type, status, client_id, trader_id=6, timestamp=datetime.now(), fiat_amount=0.0):
+    def __init__(self, xid_type, status, client_id, trader_id=2, timestamp=datetime.now(), fiat_amount=0.0):
         self.xid_type = xid_type
         self.status = status
         self.client_id = client_id

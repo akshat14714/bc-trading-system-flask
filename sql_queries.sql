@@ -1,5 +1,5 @@
 drop database if exists btctradingflask;
--- create user 'sql_admin'@'localhost' identified by 'progamut';
+create user 'sql_admin'@'localhost' identified by 'sql_admin';
 create database btctradingflask;
 GRANT ALL PRIVILEGES ON btctradingflask . * TO 'sql_admin'@'localhost';
 use btctradingflask;
@@ -21,7 +21,9 @@ CREATE TABLE users (
   bitcoin_balance float NOT NULL DEFAULT '0',
   fiat_balance float NOT NULL DEFAULT '0',
   total_transaction float DEFAULT '0',
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  UNIQUE KEY username (username),
+  UNIQUE KEY email (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE transactions (

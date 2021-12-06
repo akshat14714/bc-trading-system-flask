@@ -1,7 +1,7 @@
 drop database if exists btctradingflask;
-create user 'sql_admin'@'localhost' identified by 'progamut';
+create user 'sql_admin'@'localhost' identified by 'sql_admin';
 create database btctradingflask;
-GRANT ALL PRIVILEGES ON bitcoinmanagement_test . * TO 'sql_admin'@'localhost';
+GRANT ALL PRIVILEGES ON btctradingflask . * TO 'sql_admin'@'localhost';
 use btctradingflask;
 
 CREATE TABLE users (
@@ -21,7 +21,9 @@ CREATE TABLE users (
   bitcoin_balance float NOT NULL DEFAULT '0',
   fiat_balance float NOT NULL DEFAULT '0',
   total_transaction float DEFAULT '0',
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  UNIQUE KEY username (username),
+  UNIQUE KEY email (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE transactions (
@@ -75,12 +77,45 @@ CREATE TABLE changelogs (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+INSERT INTO users (username, email, first_name, last_name, password, mobile_phone, user_type, street, city, state, zipcode)
+VALUES ('admin', 'admin@example.com', 'admin', 'manager', 'pbkdf2:sha256:150000$oxDpouOh$c5166b20f43c5a1cf398fdca8f401ae724c507d0c08df380dbb769020fca9306',
+'1234567890', 1, 'UT Dallas', 'Dallas', 'Texas', '75080');
+
+INSERT INTO users (username, email, first_name, last_name, password, mobile_phone, user_type, street, city, state, zipcode)
+VALUES ('bot_trader', 'bot_trader@example.com', 'bot', 'trader', 'pbkdf2:sha256:150000$b9SpYxyd$ce37e32c3b9e18c5720db06e841e22725349673848cbb529350fb6bb2d50d39e',
+'1234567809', 2, 'UT Dallas', 'Dallas', 'Texas', '75080');
+
+
+
+delimiter $$
+create procedure add_clients_traders()
+begin
+	declare id int;
+	set id = 3;
+	while id <= 100 do
+
+        INSERT INTO users (username, email, first_name, last_name, password, mobile_phone, user_type, street, city, state, zipcode)
+        VALUES (concat('trader', id), concat('trader', id, '@example.com'), concat('trader', id), concat('TraderLast', id), 'pbkdf2:sha256:150000$b9SpYxyd$ce37e32c3b9e18c5720db06e841e22725349673848cbb529350fb6bb2d50d39e',
+            concat('4694229', id), 2, 'UT Dallas', 'Dallas', 'Texas', '75080');
+
+
+        INSERT INTO users (username, email, first_name, last_name, password, mobile_phone, user_type, level, street, city, state, zipcode)
+        VALUES (concat('client', id), concat('client', id, '@example.com'), concat('client', id), concat('ClientLast', id), 'pbkdf2:sha256:150000$oRMrdJl8$efb97140f18b93a6d61bc253fbfa45747df12d46bd0481135b1995e7fac87d3e',
+            concat('4694229', id), 3, 1, 'UT Dallas', 'Dallas', 'Texas', '75080');
+
+
+        set id = id + 1;
+	end while;
+end; $$
+
+
+delimiter ;
+call add_clients_traders();
+
+
 DROP Table Commands:
 
 DROP TABLE IF EXISTS changelogs;
-
 DROP TABLE IF EXISTS trades;
-
 DROP TABLE IF EXISTS transactions;
-
 DROP TABLE IF EXISTS users;

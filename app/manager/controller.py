@@ -6,8 +6,6 @@ from app.trade.model import Trade
 from app.transaction.model import Transaction
 from flask import *
 from flask_cors import CORS
-import sqlalchemy as sa
-from sqlalchemy import func, desc
 from sqlalchemy.sql.expression import and_
 
 from app import db

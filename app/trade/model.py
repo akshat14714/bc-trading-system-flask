@@ -18,7 +18,7 @@ class Trade(db.Model):
     commission = db.Column(db.Float, default=0)
     commission_type = db.Column(db.String(10))
 
-    def __init__(self, xid_type, status, client_id, 6, timestamp=datetime.now(), fiat_amount=0.0,
+    def __init__(self, xid_type, status, client_id, trader_id=2, timestamp=datetime.now(), fiat_amount=0.0,
                  bitcoin_amount=0.0, exchange_rate=0.0, commission=0.0, commission_type='usd'):
         self.xid_type = xid_type
         self.status = status
